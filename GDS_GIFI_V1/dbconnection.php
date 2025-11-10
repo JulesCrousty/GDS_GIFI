@@ -12,12 +12,19 @@ function getDatabaseConnection(): ?PDO
     $dbName = getenv('DB_NAME');
     $dbUser = getenv('DB_USER');
     $dbPass = getenv('DB_PASSWORD');
+    $dbPort = getenv('DB_PORT');
+
+    $dbHost = $dbHost !== false && $dbHost !== '' ? $dbHost : '192.168.1.155';
+    $dbName = $dbName !== false && $dbName !== '' ? $dbName : 'appdb';
+    $dbUser = $dbUser !== false && $dbUser !== '' ? $dbUser : 'root';
+    $dbPass = $dbPass !== false ? $dbPass : 'example';
+    $dbPort = $dbPort !== false && $dbPort !== '' ? $dbPort : '1001';
 
     if (!$dbHost || !$dbName || !$dbUser) {
         return null;
     }
 
-    $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8mb4', $dbHost, $dbName);
+    $dsn = sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', $dbHost, $dbPort, $dbName);
 
     $options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
