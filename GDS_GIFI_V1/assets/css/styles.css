@@ -1,0 +1,228 @@
+:root {
+    --primary: #1d4ed8;
+    --primary-dark: #1e40af;
+    --accent: #e0f2fe;
+    --background: #0f172a;
+    --card-bg: rgba(15, 23, 42, 0.85);
+    --text-light: #f8fafc;
+    --text-muted: #cbd5f5;
+    --border-radius: 18px;
+    --shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.45);
+    font-size: 16px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--background), #1e293b 70%);
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+main.home-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    width: min(1200px, 100%);
+}
+
+.home-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 3rem 2.5rem;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    position: relative;
+    overflow: hidden;
+    min-height: 320px;
+    display: flex;
+    align-items: flex-end;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+}
+
+.home-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(14, 165, 233, 0.2), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.home-card:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: var(--shadow);
+    border-color: rgba(96, 165, 250, 0.45);
+}
+
+.home-card:hover::before {
+    opacity: 1;
+}
+
+.home-card__content {
+    position: relative;
+    z-index: 1;
+}
+
+.home-card h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+}
+
+.home-card p {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+}
+
+.page {
+    width: min(1100px, 100%);
+    margin: 3rem auto;
+    background: rgba(15, 23, 42, 0.8);
+    border-radius: var(--border-radius);
+    padding: 3rem;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.page__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+}
+
+.page__subtitle {
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(148, 163, 184, 0.7);
+    margin-bottom: 0.35rem;
+}
+
+.page__title h1 {
+    font-size: clamp(2rem, 3vw, 2.5rem);
+}
+
+.page__title a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    padding: 0.6rem 1.2rem;
+    border-radius: 999px;
+    transition: color 0.3s ease, border 0.3s ease;
+}
+
+.page__title a:hover {
+    color: var(--text-light);
+    border-color: rgba(148, 163, 184, 0.4);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.field label {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.field input,
+.field select {
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.field input:focus,
+.field select:focus {
+    outline: none;
+    border-color: rgba(96, 165, 250, 0.7);
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
+}
+
+.searchable-select {
+    position: relative;
+}
+
+.searchable-select input[type="text"] {
+    padding-right: 2.75rem;
+}
+
+.searchable-select__icon {
+    position: absolute;
+    right: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: rgba(148, 163, 184, 0.7);
+}
+
+.suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(15, 23, 42, 0.95);
+    border-radius: 12px;
+    margin-top: 0.4rem;
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    display: none;
+    z-index: 10;
+}
+
+.suggestions.active {
+    display: block;
+}
+
+.suggestions button {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.suggestions button:hover {
+    background: rgba(59, 130, 246, 0.2);
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 1.25rem;
+    }
+
+    .page {
+        padding: 2rem 1.5rem;
+    }
+}
