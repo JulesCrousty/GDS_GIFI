@@ -1,0 +1,177 @@
+{
+  "name": "DEV_SYNC_SEATABLE_TO_MYSQL",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "list",
+        "tableName": "Stock",
+        "viewName": "Vue GLOBAL",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.seaTable",
+      "typeVersion": 2,
+      "position": [
+        64,
+        16
+      ],
+      "id": "3899344c-53c0-48ea-a0a8-acaaba8bbc42",
+      "name": "Get many rows",
+      "credentials": {
+        "seaTableApi": {
+          "id": "eXR7QiCaVlNu5Rno",
+          "name": "SEATABLE_DEV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "table": {
+          "__rl": true,
+          "value": "Stock",
+          "mode": "list",
+          "cachedResultName": "Stock"
+        },
+        "dataMode": "defineBelow",
+        "columnToMatchOn": "S/N",
+        "valueToMatchOn": "={{ $json['S/N'] }}",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "Article",
+              "value": "={{ $json.Article[0].display_value }}"
+            },
+            {
+              "column": "Article",
+              "value": "={{ $json.Article[0].display_value }}"
+            },
+            {
+              "column": "Attribution",
+              "value": "={{ $json.Attribution }}"
+            },
+            {
+              "column": "NEUF/OCCASION",
+              "value": "={{ $json['NEUF/OCCASION'] }}"
+            },
+            {
+              "column": "Etat",
+              "value": "={{ $json.Etat }}"
+            },
+            {
+              "column": "Garantie",
+              "value": "={{ $json.Garantie }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        272,
+        16
+      ],
+      "id": "789860ba-5d69-4d52-a456-dd7f43d010b7",
+      "name": "Insert or update rows in a table",
+      "credentials": {
+        "mySql": {
+          "id": "7TV5Bwl4POrjiZml",
+          "name": "MYSQL_DEV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -288,
+        16
+      ],
+      "id": "c1982cc4-5c8f-4808-a90a-5b8d2c5503d2",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "table": {
+          "__rl": true,
+          "value": "Stock",
+          "mode": "list",
+          "cachedResultName": "Stock"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        -112,
+        16
+      ],
+      "id": "98b9537e-f60e-43e4-9578-3aa43e3f9fa0",
+      "name": "Delete table or rows",
+      "credentials": {
+        "mySql": {
+          "id": "7TV5Bwl4POrjiZml",
+          "name": "MYSQL_DEV"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Delete table or rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert or update rows in a table": {
+      "main": [
+        []
+      ]
+    },
+    "Delete table or rows": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "ff8e3ecf-f09b-4515-9fb1-cd6f00ed13d1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e98866a0a9a2d0534250c790b8d28f12639e1ac79e8db1a8d225d213d4c8e853"
+  },
+  "id": "GAjJf5zKp39f85Si",
+  "tags": []
+}

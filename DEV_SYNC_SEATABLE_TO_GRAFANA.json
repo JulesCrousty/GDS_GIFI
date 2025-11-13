@@ -1,0 +1,190 @@
+{
+  "name": "DEV_SYNC_SEATABLE_TO_GRAFANA",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "list",
+        "tableName": "Articles",
+        "viewName": "N8N",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.seaTable",
+      "typeVersion": 2,
+      "position": [
+        176,
+        0
+      ],
+      "id": "f0828e7f-7f2c-4ae6-b952-d609ea3f3ecb",
+      "name": "Get many rows",
+      "credentials": {
+        "seaTableApi": {
+          "id": "eXR7QiCaVlNu5Rno",
+          "name": "SEATABLE_DEV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "table": {
+          "__rl": true,
+          "value": "Articles",
+          "mode": "list",
+          "cachedResultName": "Articles"
+        },
+        "dataMode": "defineBelow",
+        "columnToMatchOn": "Article",
+        "valueToMatchOn": "={{ $json.Article }}",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "Marque",
+              "value": "={{ $json.Marque }}"
+            },
+            {
+              "column": "Type de matériel",
+              "value": "={{ $json['Type de matériel'] }}"
+            },
+            {
+              "column": "Type Client",
+              "value": "={{ $json['Type Client'] }}"
+            },
+            {
+              "column": "EAN",
+              "value": "={{ $json.EAN }}"
+            },
+            {
+              "column": "P/N",
+              "value": "={{ $json['P/N'] }}"
+            },
+            {
+              "column": "Processeur",
+              "value": "={{ $json.Processeur }}"
+            },
+            {
+              "column": "RAM",
+              "value": "={{ $json.RAM }}"
+            },
+            {
+              "column": "Date fin de service",
+              "value": "={{ $json['Date fin de service'] }}"
+            },
+            {
+              "column": "Nb de stock",
+              "value": "={{ $json['Nb de stock'] }}"
+            },
+            {
+              "column": "Nb de stock Mat Fonctionnel",
+              "value": "={{ $json['Nb de stock Mat Fonctionnel'] }}"
+            },
+            {
+              "column": "Nb de stock Mat prêt à lemploi",
+              "value": "={{ $json['Nb de stock Mat prêt à l\\'emploi'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        384,
+        0
+      ],
+      "id": "a2836abd-04b7-4545-b896-2a1cf6999d7a",
+      "name": "Insert or update rows in a table",
+      "credentials": {
+        "mySql": {
+          "id": "7TV5Bwl4POrjiZml",
+          "name": "MYSQL_DEV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -208,
+        0
+      ],
+      "id": "5e3a64b5-73a0-4c15-a4bd-e3fad66fd89a",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "table": {
+          "__rl": true,
+          "value": "Articles",
+          "mode": "list",
+          "cachedResultName": "Articles"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        -16,
+        0
+      ],
+      "id": "9d1323bb-35c1-4766-9055-939d74cc1b9a",
+      "name": "Delete table or rows",
+      "credentials": {
+        "mySql": {
+          "id": "7TV5Bwl4POrjiZml",
+          "name": "MYSQL_DEV"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Delete table or rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete table or rows": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b5c51adf-6996-480a-80af-05d3da181b67",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e98866a0a9a2d0534250c790b8d28f12639e1ac79e8db1a8d225d213d4c8e853"
+  },
+  "id": "QLL1pqS3EGQrOzh6",
+  "tags": []
+}

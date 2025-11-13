@@ -1,0 +1,471 @@
+{
+  "name": "DEV_SYNC_GLOBAL",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "search",
+        "tableName": "Stock",
+        "searchColumn": "S/N",
+        "searchTerm": "={{ $json['S/N'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.seaTable",
+      "typeVersion": 2,
+      "position": [
+        112,
+        -240
+      ],
+      "id": "fc50c4cc-45c9-4af2-b4d8-84c7ecba004d",
+      "name": "Search a row by keyword",
+      "alwaysOutputData": true,
+      "credentials": {
+        "seaTableApi": {
+          "id": "eXR7QiCaVlNu5Rno",
+          "name": "SEATABLE_DEV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableName": "Stock",
+        "rowId": "={{ $json._id }}",
+        "columnsUi": {
+          "columnValues": [
+            {
+              "columnName": "S/N",
+              "columnValue": "={{ $('Identification TAG_MODIFICATION').item.json['S/N'] }}"
+            },
+            {
+              "columnName": "Attribution",
+              "columnValue": "={{ $('Identification TAG_MODIFICATION').item.json.Attribution }}"
+            },
+            {
+              "columnName": "NEUF/OCCASION",
+              "columnValue": "={{ $('Identification TAG_MODIFICATION').item.json['NEUF/OCCASION'] }}"
+            },
+            {
+              "columnName": "Etat",
+              "columnValue": "={{ $('Identification TAG_MODIFICATION').item.json.Etat }}"
+            },
+            {
+              "columnName": "Garantie",
+              "columnValue": "={{ $('Identification TAG_MODIFICATION').item.json.Garantie }}"
+            },
+            {
+              "columnName": "Date Inventaire",
+              "columnValue": "={{ $('Identification TAG_MODIFICATION').item.json['Date Inventaire'] }}"
+            },
+            {
+              "columnName": "Date test appareil",
+              "columnValue": "={{ $('Identification TAG_MODIFICATION').item.json['Date test appareil'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.seaTable",
+      "typeVersion": 2,
+      "position": [
+        528,
+        -240
+      ],
+      "id": "fefa2a0b-8da8-4904-80c2-d08ce85e95b0",
+      "name": "Update a row",
+      "alwaysOutputData": false,
+      "credentials": {
+        "seaTableApi": {
+          "id": "eXR7QiCaVlNu5Rno",
+          "name": "SEATABLE_DEV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": "Stock"
+        },
+        "dataMode": "defineBelow",
+        "columnToMatchOn": "S/N",
+        "valueToMatchOn": "={{ $('Identification TAG_MODIFICATION').item.json['S/N'] }}",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "Notes"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        704,
+        -240
+      ],
+      "id": "b3f54c55-9a3d-4664-9879-bc7cc1b53656",
+      "name": "Update rows in a table",
+      "credentials": {
+        "mySql": {
+          "id": "7TV5Bwl4POrjiZml",
+          "name": "MYSQL_DEV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "14489d3f-dbf4-4385-9bfe-9ad9cf714d87",
+              "leftValue": "={{ $json.Notes }}",
+              "rightValue": "x",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {
+          "ignoreCase": false
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "c2d00317-cae2-402f-8e43-d17531ef170a",
+      "name": "If",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "GAjJf5zKp39f85Si",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/GAjJf5zKp39f85Si",
+          "cachedResultName": "DEV_SYNC_SEATABLE_TO_MYSQL"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {}
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        704,
+        96
+      ],
+      "id": "f8fd73b6-4697-4a73-8c3d-bd09fa37517a",
+      "name": "Call 'SYNC_SEATABLE_TO_MYSQL'1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -416,
+        0
+      ],
+      "id": "ce3379ac-5f37-42b7-a63b-156ced400164",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "QLL1pqS3EGQrOzh6",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/QLL1pqS3EGQrOzh6",
+          "cachedResultName": "SYNC_SEATABLE_TO_GRAFANA"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {}
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        912,
+        96
+      ],
+      "id": "b879579f-ab49-4b13-bb89-18ea16cd7163",
+      "name": "Call 'SYNC_SEATABLE_TO_GRAFANA'"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a24ada1d-8ef3-4848-81d1-9cc58d56ff8b",
+              "leftValue": "={{ $('Identification TAG_MODIFICATION').item.json['S/N'] }}",
+              "rightValue": "={{ $json['S/N'] }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        304,
+        -240
+      ],
+      "id": "0397dc95-8098-42b7-9d74-e4a4e83283f8",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "tableName": "Stock",
+        "columnsUi": {
+          "columnValues": [
+            {
+              "columnName": "S/N",
+              "columnValue": "={{ $('Identification TAG_MODIFICATION').item.json['S/N'] }}"
+            },
+            {
+              "columnName": "Attribution",
+              "columnValue": "={{ $('Identification TAG_MODIFICATION').item.json.Attribution }}"
+            },
+            {
+              "columnName": "NEUF/OCCASION",
+              "columnValue": "={{ $('Identification TAG_MODIFICATION').item.json['NEUF/OCCASION'] }}"
+            },
+            {
+              "columnName": "Etat",
+              "columnValue": "={{ $('Identification TAG_MODIFICATION').item.json.Etat }}"
+            },
+            {
+              "columnName": "Garantie",
+              "columnValue": "={{ $('Identification TAG_MODIFICATION').item.json.Garantie }}"
+            },
+            {
+              "columnName": "Date Inventaire",
+              "columnValue": "={{ $('Identification TAG_MODIFICATION').item.json['Date Inventaire'] }}"
+            },
+            {
+              "columnName": "Date test appareil",
+              "columnValue": "={{ $('Identification TAG_MODIFICATION').item.json['Date test appareil'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.seaTable",
+      "typeVersion": 2,
+      "position": [
+        528,
+        -64
+      ],
+      "id": "a6adaf8f-12aa-44a6-bdea-461b9e7dce83",
+      "name": "Create a row",
+      "alwaysOutputData": false,
+      "credentials": {
+        "seaTableApi": {
+          "id": "eXR7QiCaVlNu5Rno",
+          "name": "SEATABLE_DEV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "table": {
+          "__rl": true,
+          "value": "Stock",
+          "mode": "list",
+          "cachedResultName": "Stock"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "Notes",
+              "value": "x"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        -240,
+        0
+      ],
+      "id": "aded1a14-f3f4-4530-acfd-630a621558f2",
+      "name": "Identification TAG_MODIFICATION",
+      "alwaysOutputData": true,
+      "credentials": {
+        "mySql": {
+          "id": "7TV5Bwl4POrjiZml",
+          "name": "MYSQL_DEV"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Search a row by keyword": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row": {
+      "main": [
+        [
+          {
+            "node": "Update rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update rows in a table": {
+      "main": [
+        [
+          {
+            "node": "Call 'SYNC_SEATABLE_TO_MYSQL'1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Search a row by keyword",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call 'SYNC_SEATABLE_TO_MYSQL'1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Identification TAG_MODIFICATION",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'SYNC_SEATABLE_TO_MYSQL'1": {
+      "main": [
+        [
+          {
+            "node": "Call 'SYNC_SEATABLE_TO_GRAFANA'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row": {
+      "main": [
+        [
+          {
+            "node": "Update rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Identification TAG_MODIFICATION": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "58d252d0-8d3e-4155-b304-5af0df591226",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e98866a0a9a2d0534250c790b8d28f12639e1ac79e8db1a8d225d213d4c8e853"
+  },
+  "id": "MFC2GFQi0kuzdwCp",
+  "tags": []
+}
