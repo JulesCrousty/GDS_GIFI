@@ -8,7 +8,7 @@
 function createStockItem(PDO $connection, array $data): bool
 {
     $sql = <<<'SQL'
-        INSERT INTO stock (`S/N`, `Article`, `Attribution`, `NEUF/OCCASION`, `Etat`, `Garantie`, `Date Inventaire`, `Date test appareil`, `Notes`, `Sortie stock`, `Entrée stock`)
+        INSERT INTO `Stock` (`S/N`, `Article`, `Attribution`, `NEUF/OCCASION`, `Etat`, `Garantie`, `Date Inventaire`, `Date test appareil`, `Notes`, `Sortie stock`, `Entrée stock`)
         VALUES (:serial_number, :article, :attribution, :condition_status, :state, :warranty, :inventory_date, :test_date, :notes, :stock_out, :stock_in)
     SQL;
 
