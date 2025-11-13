@@ -85,9 +85,9 @@ main.home-container {
 }
 
 .page {
-    width: min(1100px, 100%);
+    width: min(1200px, 100%);
     margin: 3rem auto;
-    background: rgba(15, 23, 42, 0.8);
+    background: rgba(15, 23, 42, 0.85);
     border-radius: var(--border-radius);
     padding: 3rem;
     box-shadow: var(--shadow);
@@ -99,6 +99,7 @@ main.home-container {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2.5rem;
+    gap: 1.5rem;
 }
 
 .page__subtitle {
@@ -126,6 +127,119 @@ main.home-container {
 .page__title a:hover {
     color: var(--text-light);
     border-color: rgba(148, 163, 184, 0.4);
+}
+
+.page__actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.alert {
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.alert--success {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.3);
+    color: #bbf7d0;
+}
+
+.alert--error {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #fecaca;
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+}
+
+.stock-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.stock-list__item {
+    background: rgba(15, 23, 42, 0.9);
+    border-radius: 16px;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    padding: 1.75rem;
+    box-shadow: 0 12px 24px -16px rgba(15, 23, 42, 0.7);
+}
+
+.stock-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem 1.5rem;
+}
+
+.stock-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.stock-field__label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(148, 163, 184, 0.7);
+}
+
+.stock-field__value {
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.stock-field__value--notes {
+    font-family: 'Fira Code', monospace;
+    letter-spacing: 0.1em;
+}
+
+.stock-field__input {
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 12px;
+    padding: 0.75rem 0.9rem;
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+.stock-field__input:focus {
+    outline: none;
+    border-color: rgba(96, 165, 250, 0.7);
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
+}
+
+.stock-actions {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    grid-column: 1 / -1;
+}
+
+.stock-actions button {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: var(--text-light);
+    border: none;
+    padding: 0.85rem 1.75rem;
+    border-radius: 999px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stock-actions button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px -10px rgba(37, 99, 235, 0.45);
 }
 
 .form-grid {

@@ -12,13 +12,28 @@ function loadArticles(?\PDO $connection): array
     }
 
     try {
-        $statement = $connection->query('SELECT id, name FROM articles ORDER BY name ASC');
+        $query = <<<SQL
+            SELECT
+                `Article` AS article,
+                `Marque` AS brand,
+                `Type de matériel` AS hardware_type
+            FROM `Articles`
+            ORDER BY `Article` ASC
+        SQL;
+
+        $statement = $connection->query($query);
         $items = [];
 
         foreach ($statement->fetchAll() as $row) {
+            $labelParts = array_filter([
+                $row['article'],
+                $row['brand'],
+                $row['hardware_type'],
+            ]);
+
             $items[] = [
-                'label' => $row['name'],
-                'value' => (string) $row['id'],
+                'label' => implode(' · ', $labelParts),
+                'value' => $row['article'],
             ];
         }
 
@@ -41,15 +56,12 @@ function loadArticles(?\PDO $connection): array
 function getFallbackArticles(): array
 {
     return [
-        ['label' => 'Carton de vis M4', 'value' => 'sample-1'],
-        ['label' => 'Boîte de connecteurs RJ45', 'value' => 'sample-2'],
-        ['label' => 'Ordinateur portable 14"', 'value' => 'sample-3'],
-        ['label' => 'Écran 24" Full HD', 'value' => 'sample-4'],
-        ['label' => 'Clavier mécanique AZERTY', 'value' => 'sample-5'],
-        ['label' => 'Souris sans fil', 'value' => 'sample-6'],
-        ['label' => 'Switch 24 ports PoE', 'value' => 'sample-7'],
-        ['label' => "Rouleau d'étiquettes", 'value' => 'sample-8'],
-        ['label' => 'Casque antibruit', 'value' => 'sample-9'],
-        ['label' => 'Batterie externe 10 000 mAh', 'value' => 'sample-10'],
+        ['label' => '15G2 · LENOVO · Ordinateur portable 15"', 'value' => '15G2'],
+        ['label' => 'L15 (Gen 1) · LENOVO · Ordinateur portable 15"', 'value' => 'L15 (Gen 1)'],
+        ['label' => 'L15 (Gen 2) · LENOVO · Ordinateur portable 15"', 'value' => 'L15 (Gen 2)'],
+        ['label' => 'L580 · LENOVO · Ordinateur portable 15"', 'value' => 'L580'],
+        ['label' => 'L580 16Go · LENOVO · Ordinateur portable 15"', 'value' => 'L580 16Go'],
+        ['label' => 'X13 · LENOVO · Ordinateur portable 13"', 'value' => 'X13'],
+        ['label' => 'X280 · LENOVO · Ordinateur portable 13"', 'value' => 'X280'],
     ];
 }
