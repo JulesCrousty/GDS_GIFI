@@ -10,14 +10,30 @@
     <main class="home-container">
         <a class="home-card" href="stock-in.php">
             <div class="home-card__content">
-                <h1>Entrée de stock</h1>
-                <p>Enregistrer un nouvel article entrant dans l'entrepôt.</p>
+                <p class="home-card__eyebrow">Flux entrant</p>
+                <h1>Entrée des stocks</h1>
+                <p>Scanner ou saisir un produit pour l'ajouter à l'entrepôt.</p>
             </div>
         </a>
         <a class="home-card" href="stock-out.php">
             <div class="home-card__content">
-                <h1>Sortie de stock</h1>
+                <p class="home-card__eyebrow">Flux sortant</p>
+                <h1>Sortie des stocks</h1>
                 <p>Documenter la sortie d'un article de l'entrepôt.</p>
+            </div>
+        </a>
+        <a class="home-card home-card--disabled" href="#" aria-disabled="true">
+            <div class="home-card__content">
+                <p class="home-card__eyebrow">Suivi</p>
+                <h1>Inventaire</h1>
+                <p>Fonctionnalité en préparation.</p>
+            </div>
+        </a>
+        <a class="home-card home-card--disabled" href="#" aria-disabled="true">
+            <div class="home-card__content">
+                <p class="home-card__eyebrow">Administration</p>
+                <h1>Rapports</h1>
+                <p>Fonctionnalité en préparation.</p>
             </div>
         </a>
     </main>
